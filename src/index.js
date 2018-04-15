@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import {HashRouter, NavLink} from 'react-router-dom';
+
 import style from './style.styl';
 
 let MenuItem = ({title, active, onClick}) => (
-    <a href='#'>
-        <li className={active ? style.active : null} onClick={onClick}>{title}</li>
+    <a className={active ? 'active' : null} aria-current={active} href='#' onClick={onClick}>
+        <li>{title}</li>
     </a>
 )
 
@@ -48,11 +50,23 @@ class Menu extends React.Component {
 }
 
 let RouterMenu = ({items}) => (
-    <ul>
-        {items.map((e) => (
-            <NavLink to={e.path}>{e.title}</NavLink>
-        ))}
-    </ul>
+    <nav className={style['app-menu']}>
+        <ul>
+            {items.map((e) => (
+                <NavLink to={e.path}><li>{e.title}</li></NavLink>
+            ))}
+        </ul>
+    </nav>
 )
 
-export {Menu as default, RouterMenu}
+let Test = (props) => (
+    <HashRouter>
+        <div style={{background: 'black'}}>
+            <Menu {...props}/>
+            <br />
+            <RouterMenu {...props}/>
+        </div>
+    </HashRouter>
+)
+
+export {Test as default, Menu, RouterMenu}
