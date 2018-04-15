@@ -1,18 +1,11 @@
 {
-  "name": "butter-base-components",
+  "name": "butter-component-menu",
   "version": "0.1.0",
-  "description": "Base Butter Components used by other, more specific component code",
+  "description": "A Butter component for menus, uses react-dom-router",
   "main": "dist/bundle.js",
-  "scripts": {
-    "prepublish": "npm run build",
-    "install": "PATH=$PATH:../.bin bcb-run install",
-    "build": "bcb-run build",
-    "start": "bcb-run start",
-    "lint": "bcb-run lint"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/buttercomponents/butter-base-components.git"
+    "url": "https://github.com/buttercomponents/butter-component-menu.git"
   },
   "keywords": [
     "button",
@@ -33,15 +26,22 @@
   "author": "Niv Sardi <x@btn.sh>",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/buttercomponents/butter-base-components/issues"
+    "url": "https://github.com/buttercomponents/butter-component-menu/issues"
   },
-  "homepage": "https://github.com/buttercomponents/butter-base-components",
+  "homepage": "https://github.com/buttercomponents/butter-component-menu",
   "devDependencies": {
     "butter-component-builder": "buttercomponents/butter-component-builder"
   },
   "dependencies": {
     "prop-types": "^15.5.10",
     "react-i18next": "^3.1.0",
-    "react-transition-group": "^1.1.2"
+    "react-router-dom": "^4.2.2"
+  },
+  "scripts": {
+    "prepublish": "npm run build",
+    "install": "PATH=$PATH:../.bin bcb-run install",
+    "build": "bcb-run build",
+    "start": "bcb-run start",
+    "lint": "bcb-run lint"
   }
 }

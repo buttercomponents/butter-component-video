@@ -1,62 +1,58 @@
 import React from 'react';
-import {translate} from 'react-i18next';
-import TitleBar from './components/title-bar';
-import Navbar from './components/navbar';
-import Toolbar from './components/toolbar';
-import Buttons  from './components/button';
-import Dropdowns  from './components/dropdown';
-import Switch  from './components/switch';
-import Stars from './components/stars';
-import View from './components/view';
-import Window from './components/window';
-import Menu from './components/menu';
+import PropTypes from 'prop-types';
 
 import style from './style.styl';
 
-let Test = ({view, title, t, ...props}) => (
-    <div className={style.layout}>
-        <Window bars={[
-            <Navbar left={<Menu {...props.menu}/>} right={<Toolbar {...view.toolbar}/>}/>
-        ]}>
+let MenuItem = ({title, active, onClick}) => (
+    <a href='#'>
+        <li className={active ? style.active : null} onClick={onClick}>{title}</li>
+    </a>
+)
 
-    <div className={style.test}>
-        {props.buttons.map((i, k) => <Buttons.Button key={k} {...i}/>)}
-    </div>
 
-    <div className={style.test}>
-        {props.dropdowns.text.map((i, k) => <Dropdowns.Dropdown key={k} {...i}/>)}
-    </div>
+class Menu extends React.Component {
 
-    <div className={style.test}>
-        {props.dropdowns.color.map((i, k) => <Dropdowns.DropdownColor key={k} {...i}/>)}
-    </div>
+    static propTypes = {
+        items: PropTypes.array.isRequired,
+        selected: PropTypes.number
+    }
 
-    <div className={style.test}>
-        {props.switches.map((i, k) => <Switch key={k} {...i}/>)}
-    </div>
+    static defaultProps = {
+        active: 0,
+    }
 
-    <div className={style.test} style={{
-        color: 'yellow'
-    }}>
-        <h1>stars</h1>
-        {props.stars.map((i, k) => <Stars key={k} {...i}/>)}
-    </div>
-        </Window>
-        {
-            props.titleBar.map((i, k) =>
-                <div key={k} className={style.test}>
-                    <TitleBar {...i}/>
-                </div>
-            )
+    constructor(props) {
+        super(props)
+        this.state = {
+            active: this.props.active,
         }
+    }
 
-        {
-            props.navbars.map(({toolbar, ...props}, k) =>
-                <div key={k} className={style.test}>
-                    <Navbar key={k} right={<Toolbar {...toolbar} />} {...props}/>
-                </div>
-            )
-        }
-    </div>)
+    setActiveItem = (item) => {
+        this.setState({active: item})
+    }
 
-export default translate('test')(Test)
+    render() {
+        const {items} = this.props;
+        return(
+            <nav className={style['app-menu']}>
+                <ul>
+                    {items.map((i, k) => (
+                        <MenuItem key={k} active={this.state.active === k} {...i} onClick={event => this.setActiveItem(k)} />
+                    ))}
+                </ul>
+                <i className={style['active-marker']}></i>
+            </nav>
+        )
+    }
+}
+
+let RouterMenu = ({items}) => (
+    <ul>
+        {items.map((e) => (
+            <NavLink to={e.path}>{e.title}</NavLink>
+        ))}
+    </ul>
+)
+
+export {Menu as default, RouterMenu}
