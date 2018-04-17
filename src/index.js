@@ -53,7 +53,7 @@ let RouterMenu = ({items}) => (
     <nav className={style['app-menu']}>
         <ul>
             {items.map((e) => (
-                <NavLink to={e.path}><li>{e.title}</li></NavLink>
+                <NavLink key={e.title} to={e.path ? e.path : e.title}><li>{e.title}</li></NavLink>
             ))}
         </ul>
     </nav>
