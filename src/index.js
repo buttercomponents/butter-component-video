@@ -49,12 +49,17 @@ class Menu extends React.Component {
     }
 }
 
-let RouterMenu = ({items}) => (
+let RouterMenu = ({items, location}) => (
     <nav className={style['app-menu']}>
         <ul>
-            {items.map((e) => (
-                <NavLink key={e.title} to={e.path ? e.path : e.title}><li>{e.title}</li></NavLink>
-            ))}
+            {items.map((e) => {
+                 let title = e.title ? e.title: e
+                 let path = e.path ? e.path : title;
+
+                 return (
+                     <NavLink key={title} to={path}><li>{title}</li></NavLink>
+                 )
+            })}
         </ul>
     </nav>
 )
