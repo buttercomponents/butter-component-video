@@ -2,7 +2,7 @@
   "name": "butter-component-menu",
   "version": "0.1.0",
   "description": "A Butter component for menus, uses react-dom-router",
-  "main": "dist/bundle.js",
+  "main": "dist/",
   "repository": {
     "type": "git",
     "url": "https://github.com/buttercomponents/butter-component-menu.git"
