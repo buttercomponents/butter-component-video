@@ -6,7 +6,7 @@ import {HashRouter, NavLink} from 'react-router-dom';
 import style from './style.styl';
 
 let MenuItem = ({title, active, onClick}) => (
-    <a className={active ? 'active' : null} aria-current={active} href='#' onClick={onClick}>
+    <a className={active ? 'active' : null} aria-current={active}  onClick={onClick}>
         <li>{title}</li>
     </a>
 )

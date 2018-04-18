@@ -13,7 +13,7 @@
         padding: 0;
     }
 
-    li, a {
+    a {
         display: inline-block;
         float: left;
         margin-right: 16px;
@@ -22,16 +22,21 @@
         opacity: 0.4;
         text-transform: uppercase;
         position: relative;
+        cursor: pointer;
+        transition: opacity 0.2s ease;
 
         &:hover {
             opacity: 0.8;
         }
 
         &:hover a::after {
+            margin auto;
+            left: 0;
+            right: 0;
             width: 100%;
         }
 
-        a {
+        li {
             color: #ffffff;
             display: block;
             text-decoration: none;
@@ -40,68 +45,33 @@
             transition: all .2s ease;
         }
 
-        a::after {
+        li::after {
             content: " ";
             background: #FFF;
             bottom: 0;
-            height: 2px;
+            height: 3px;
             position: absolute;
-            margin auto;
             left: 0;
-            right: 0;
             width: 0;
-            border-radius: 2px;
+            border-radius: 3px;
             -webkit-transition: all 0.2s cubic-bezier(0.25, 0.25, 0.25, 1.25);
             transition: all 0.2s cubic-bezier(0.25, 0.25, 0.25, 1.25);
 
         }
     }
 
-    [aria-current="true"] {
+    a[aria-current="true"] {
         opacity: 1;
+        color: red;
 
 
         &:hover {
             opacity: 1;
         }
 
-        a::after {
+        li::after {
           background-color: var(--Main-color);
           width: 100%;
         }
     }
-}
-
-.activeMarker {
-    background: #FF1744;
-    bottom: 0;
-    display: none;
-    height: 3px;
-    position: absolute;
-    left: 0;
-    margin: 0 20px;
-    -webkit-transition: all 0.2s cubic-bezier(0.25, 0.25, 0.25, 1.25);
-    transition: all 0.2s cubic-bezier(0.25, 0.25, 0.25, 1.25);
-    width: auto;
-    border-radius: 3px;
-}
-
-
-/*
- * Shows menu
- */
-
-.app-menu.shows-menu li {
-    font-size: 18px;
-    line-height: 22px;
-}
-
-.app-menu.shows-menu li a {
-    padding: 0;
-    margin: 0 20px;
-}
-
-.app-menu.shows-menu .active-marker,
-.app-menu.shows-menu li:hover a::after {
-    height: 2px;
 }

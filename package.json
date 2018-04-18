@@ -34,6 +34,7 @@
     "react-router-dom": "^4.2.2"
   },
   "scripts": {
+    "prepublish": "npm run build",
     "install": "PATH=$PATH:../.bin bcb-run install",
     "build": "bcb-run build",
     "start": "bcb-run start",
