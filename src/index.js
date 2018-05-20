@@ -90,7 +90,7 @@ const RouterMenu = ({items, child, ...props}) => {
             <ul>
                 {items.map((e) => {
                      const title = e.title ? e.title: e
-                     const path = e.path ? e.path : e.id ? id : title
+                     const path = e.path ? e.path : e.id ? e.id : title
 
                      return (
                          <NavLink key={path} to={path}><li>{title}</li></NavLink>
