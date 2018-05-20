@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {HashRouter, NavLink} from 'react-router-dom';
+import {NavLink, Switch, Route} from 'react-router-dom';
 
 import style from './style.styl';
 
@@ -66,41 +66,34 @@ class StateMenu extends React.Component {
     }
 }
 
-const RouterMenu = ({items, child, ...props}) => {
-    const key = location.href.split('/').pop()
-    let active = -1
-    for (let i in items) {
-        const item = items[i]
-        if ((item.path && item.path.split('/').pop() === key)
-            || (item.id === key)
-            || (item.title === key)) {
-            active = i
-            break;
-        }
-    }
+const RouterMenu = ({items, child, ...props}) => (<div>
+    <nav className={style['app-menu']}>
+        <ul>
+            {items.map((item) => {
+                 const title = item.title ? item.title: item
+                 const path = item.path ? item.path : title.replace(/\s/, '')
 
-    const Child = child ? new child({
-        items: items[active],
-        active,
-        ...props
-    }): null
+                 return (
+                     <NavLink key={title} to={path}><li>{title}</li></NavLink>
+                 )
+            })}
+        </ul>
+    </nav>
+    {child && <Switch>
+        {items.map((item) => {
+             const title = item.title ? item.title: item
+             const path = item.path ? item.path : title.replace(/\s/, '')
 
-    return <div>
-        <nav className={style['app-menu']}>
-            <ul>
-                {items.map((e) => {
-                     const title = e.title ? e.title: e
-                     const path = e.path ? e.path : e.id ? e.id : title
-
-                     return (
-                         <NavLink key={path} to={path}><li>{title}</li></NavLink>
-                     )
-                })}
-            </ul>
-        </nav>
-        {Child}
-    </div>
-}
+             return (
+                 <Route key={title} path={path} render={() => new child({
+                         items: item,
+                         ...props
+                 })}/>
+             )
+        })}
+    </Switch>}
+</div>
+)
 
 const TestChild = (props) => (
     <div>
@@ -109,22 +102,20 @@ const TestChild = (props) => (
 )
 
 const Test = (props) => (
-    <HashRouter>
-        <div style={{background: 'black'}}>
-            <h1>menu</h1>
-            <Menu {...props}/>
-            <h1>router menu</h1>
-            <h2>without child</h2>
-            <RouterMenu {...props}/>
-            <h2>with child</h2>
-            <RouterMenu {...props} child={TestChild}/>
-            <h1>state menu</h1>
-            <h2>without child</h2>
-            <StateMenu {...props}/>
-            <h2>with child</h2>
-            <StateMenu {...props} child={TestChild}/>
-        </div>
-    </HashRouter>
+    <div style={{background: 'black'}}>
+        <h1>menu</h1>
+        <Menu {...props}/>
+        <h1>router menu</h1>
+        <h2>without child</h2>
+        <RouterMenu {...props}/>
+        <h2>with child</h2>
+        <RouterMenu {...props} child={TestChild}/>
+        <h1>state menu</h1>
+        <h2>without child</h2>
+        <StateMenu {...props}/>
+        <h2>with child</h2>
+        <StateMenu {...props} child={TestChild}/>
+    </div>
 )
 
 export {Test as default, Menu, StateMenu, RouterMenu}
