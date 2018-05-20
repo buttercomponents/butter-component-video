@@ -52,16 +52,16 @@ class StateMenu extends React.Component {
 
         const Child = child ? new child({
             items: items[active],
-            key: `menu-child-${active}`,
             ...props
         }): null
 
-        return ([
-            <Menu key={`menu-${active}`} {...props}
+        return (<div>
+            <Menu {...props}
                   active={active} items={items}
-                  action={this.setActiveItem.bind(this)} />,
-            Child
-        ])
+                  action={this.setActiveItem.bind(this)} />
+            {Child}
+        </div>
+        )
 
     }
 }
