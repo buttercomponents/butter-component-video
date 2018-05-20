@@ -51,7 +51,7 @@ class StateMenu extends React.Component {
         const {active} = this.state
 
         const Child = child ? new child({
-            items: items[active],
+            ...items[active],
             ...props
         }): null
 
@@ -66,33 +66,42 @@ class StateMenu extends React.Component {
     }
 }
 
-const RouterMenu = ({items, child, ...props}) => (<div>
-    <nav className={style['app-menu']}>
-        <ul>
-            {items.map((item) => {
-                 const title = item.title ? item.title: item
-                 const path = item.path ? item.path : title.replace(/\s/, '')
+const MenuSwitch = ({items=[], child, fallback = null, ...props}) => (
+    child ? <Switch>
+        {
+            items.map(item => {
+                const title = item.title ? item.title: item
+                const path = item.path ? item.path : title.replace(/\s/, '')
 
-                 return (
-                     <NavLink key={title} to={path}><li>{title}</li></NavLink>
-                 )
-            })}
-        </ul>
-    </nav>
-    {child && <Switch>
-        {items.map((item) => {
-             const title = item.title ? item.title: item
-             const path = item.path ? item.path : title.replace(/\s/, '')
+                return (
+                    <Route key={title} path={path} render={(routerProps) => new child({
+                            ...item,
+                            ...routerProps,
+                            ...props
+                    })}/>
+                )
+            })
+        }
+        <Route render={() => fallback} />
+    </Switch> : fallback
+)
 
-             return (
-                 <Route key={title} path={path} render={() => new child({
-                         items: item,
-                         ...props
-                 })}/>
-             )
-        })}
-    </Switch>}
-</div>
+const RouterMenu = ({items, ...props}) => (
+    <div>
+        <nav className={style['app-menu']}>
+            <ul>
+                {items.map((item) => {
+                     const title = item.title ? item.title: item
+                     const path = item.path ? item.path : title.replace(/\s/, '')
+
+                     return (
+                         <NavLink key={title} to={path}><li>{title}</li></NavLink>
+                     )
+                })}
+            </ul>
+        </nav>
+        <MenuSwitch {...props} items={items}/>
+    </div>
 )
 
 const TestChild = (props) => (
@@ -118,4 +127,4 @@ const Test = (props) => (
     </div>
 )
 
-export {Test as default, Menu, StateMenu, RouterMenu}
+export {Test as default, Menu, StateMenu, RouterMenu, MenuSwitch}
