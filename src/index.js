@@ -66,19 +66,47 @@ class StateMenu extends React.Component {
     }
 }
 
-let RouterMenu = ({items, location}) => (
-    <nav className={style['app-menu']}>
-        <ul>
-            {items.map((e) => {
-                 const title = e.title ? e.title: e
-                 const path = e.path ? e.path : title;
+const RouterMenu = ({items, child, ...props}) => {
+    const key = location.href.split('/').pop()
+    let active = -1
+    for (let i in items) {
+        const item = items[i]
+        if ((item.path && item.path.split('/').pop() === key)
+            || (item.id === key)
+            || (item.title === key)) {
+            active = i
+            break;
+        }
+    }
 
-                 return (
-                     <NavLink key={title} to={path}><li>{title}</li></NavLink>
-                 )
-            })}
-        </ul>
-    </nav>)
+    const Child = child ? new child({
+        items: items[active],
+        active,
+        ...props
+    }): null
+
+    return <div>
+        <nav className={style['app-menu']}>
+            <ul>
+                {items.map((e) => {
+                     const title = e.title ? e.title: e
+                     const path = e.path ? e.path : e.id ? id : title
+
+                     return (
+                         <NavLink key={path} to={path}><li>{title}</li></NavLink>
+                     )
+                })}
+            </ul>
+        </nav>
+        {Child}
+    </div>
+}
+
+const TestChild = (props) => (
+    <div>
+        {JSON.stringify(props)}
+    </div>
+)
 
 let Test = (props) => (
     <HashRouter>
@@ -86,9 +114,15 @@ let Test = (props) => (
             <h1>menu</h1>
             <Menu {...props}/>
             <h1>router menu</h1>
+            <h2>without child</h2>
             <RouterMenu {...props}/>
+            <h2>with child</h2>
+            <RouterMenu {...props} child={TestChild}/>
             <h1>state menu</h1>
+            <h2>without child</h2>
             <StateMenu {...props}/>
+            <h2>with child</h2>
+            <StateMenu {...props} child={TestChild}/>
         </div>
     </HashRouter>
 )
