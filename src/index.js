@@ -66,22 +66,24 @@ class StateMenu extends React.Component {
     }
 }
 
+const menuRoutes = (items, child, props) => (
+    items.map(item => {
+        const title = item.title ? item.title: item
+        const path = item.path ? item.path : title.replace(/\s/, '')
+
+        return (
+            <Route key={title} path={path} render={(routerProps) => new child({
+                    ...item,
+                    ...routerProps,
+                    ...props
+            })}/>
+        )
+    })
+)
+
 const MenuSwitch = ({items=[], child, fallback = null, ...props}) => (
     child ? <Switch>
-        {
-            items.map(item => {
-                const title = item.title ? item.title: item
-                const path = item.path ? item.path : title.replace(/\s/, '')
-
-                return (
-                    <Route key={title} path={path} render={(routerProps) => new child({
-                            ...item,
-                            ...routerProps,
-                            ...props
-                    })}/>
-                )
-            })
-        }
+        {menuRoutes(items, child, props)}
         <Route render={() => fallback} />
     </Switch> : fallback
 )
@@ -127,4 +129,4 @@ const Test = (props) => (
     </div>
 )
 
-export {Test as default, Menu, StateMenu, RouterMenu, MenuSwitch}
+export {Test as default, Menu, StateMenu, RouterMenu, MenuSwitch, menuRoutes}

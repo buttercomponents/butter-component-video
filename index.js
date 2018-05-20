@@ -1,3 +1,3 @@
-import {Menu, RouterMenu, StateMenu, MenuSwitch} from './src'
+import {Menu, RouterMenu, StateMenu, MenuSwitch, menuRoutes} from './src'
 
-export {Menu as default, RouterMenu, StateMenu, MenuSwitch}
+export {Menu as default, RouterMenu, StateMenu, MenuSwitch, menuRoutes}
