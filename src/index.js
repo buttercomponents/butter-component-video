@@ -108,7 +108,7 @@ const TestChild = (props) => (
     </div>
 )
 
-let Test = (props) => (
+const Test = (props) => (
     <HashRouter>
         <div style={{background: 'black'}}>
             <h1>menu</h1>
