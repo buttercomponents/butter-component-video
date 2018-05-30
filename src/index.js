@@ -106,6 +106,10 @@ const RouterMenu = ({items, ...props}) => (
     </div>
 )
 
+RouterMenu.defaultProps = {
+    items: []
+}
+
 const TestChild = (props) => (
     <div>
         {JSON.stringify(props)}
