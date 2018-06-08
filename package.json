@@ -32,7 +32,7 @@
     "butter-base-components": "buttercomponents/butter-base-components",
     "prop-types": "^15.5.10",
     "react-html5video": "^2.5.1",
-    "react-i18next": "^3.1.0"
+    "react-i18next": "^7.7.0"
   },
   "scripts": {
     "prepublish": "npm run build",
