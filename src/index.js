@@ -42,7 +42,7 @@ class Overlay extends React.PureComponent {
         this.timer = setTimeout(this.hideBar, this.props.timeout)
     }
 
-    static showBar = (e) => {
+    showBar = (e) => {
         clearTimeout(this.timer)
         this.setState(state => ({
             show: true
@@ -120,18 +120,18 @@ const DefaultPlayer = ({
     ...props
 }) => {
     return (
-        <div className={style.component} >
+            <div className={style.component} onMouseMove={() => {}}>
             {error ? <p>{console.error(error)} </p>: null}
             <video
-                {...props}>
-                { children }
+            {...props}>
+            { children }
             </video>
             <Overlay onClick={handlers.onPlayPauseClick}>
-                <Navbar type='player-nav' goBack={goBack}/>
-                <PlayBar video={video} {...handlers}/>
+            <Navbar type='player-nav' goBack={goBack}/>
+            <PlayBar video={video} {...handlers}/>
             </Overlay>
-        </div>
-    );
+            </div>
+            );
 };
 
 DefaultPlayer.defaultProps = {
