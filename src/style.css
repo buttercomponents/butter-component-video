@@ -1,0 +1,52 @@
+div[class*=Seek_component] {
+    flex: 1;
+}
+
+div[class*=component] div[class*=track] {
+    height: 8px;
+    border-radius: 8px;
+}
+
+div[class*=component] div[class*=fill] {
+    background-color: var(--Main-color);
+    border-radius: 8px;
+}
+
+div[class*=component] div[class*=fill]:after {
+    content: "";
+    margin: -2px -8px;
+    float: right;
+    background-color: var(--Font-color);
+    width: 12px;
+    height: 12px;
+    border-radius: 20px;
+}
+
+nav[class*=player-nav], nav[class*=playbar-nav] {
+    position: relative;
+}
+
+nav[class*=player-nav][visible=false] {
+    transform: translateY(-100%);
+}
+
+nav[class*=playbar-nav] {
+    display: flex;
+}
+
+nav[class*=playbar-nav][visible=false] {
+    transform: translateY(100%);
+}
+
+*[visible] {
+    transition: all 500ms ease-in-out;
+}
+
+*[visible=true] {
+    opacity: 1;
+    transform: translateY(0%);
+}
+
+*[visible=false] {
+    opacity: 0;
+}

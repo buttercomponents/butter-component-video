@@ -1,8 +1,3 @@
 export default {
-    items: [
-        {title: 'movies', path: '/movies'},
-        {title: 'shows', path: '/shows'},
-        {title: 'anime', path: '/anime'},
-        {title: 'independent', path: '/independent'},
-    ]
+    src: "https://download.blender.org/durian/trailer/sintel_trailer-720p.mp4"
 }

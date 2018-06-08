@@ -1,0 +1,77 @@
+.component {
+    position: relative;
+    display: flex;
+}
+
+.button {
+    width: 34px;
+    height: 34px;
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 0;
+    cursor: pointer;
+}
+
+.button:focus {
+    outline: 0;
+}
+
+.icon {
+    padding: 7px;
+}
+
+.slider {
+    display: block;
+    position: relative;
+    right: 5px;
+    bottom: 100%;
+    left: 5px;
+    width: 10vw;
+}
+
+.track {
+    position: absolute;
+    bottom: calc(50% - 8px);
+    height: 8px;
+    width: calc(100% - 12px);
+    transform: translateY(-50%);
+    background-color: #3e3e3e;
+    border-radius: 8px;
+}
+
+.fill,
+.input {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.fill {
+    background-color: var(--Main-color);
+    border-radius: 8px;
+}
+
+.fill:after {
+  content: "";
+  margin: -2px -8px;
+  float: right;
+  background-color: var(--Font-color);
+  width: 12px;
+  height: 12px;
+  border-radius: 20px;
+}
+
+.input {
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    -webkit-appearance: slider-horizontal;
+    cursor: pointer;
+}

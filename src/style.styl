@@ -1,74 +1,10 @@
-
-.app-menu {
-    display: inline-block;
-    margin: auto;
-    position: relative;
-    text-align: center;
-
-    ul {
-        list-style-type: none;
-        margin: 0 auto;
-        text-align: center;
-        padding: 0;
-    }
-
-    a {
-        display: inline-block;
-        margin-right: 16px;
-        font-size: 22px;
-        font-weight: bold;
-        opacity: 0.4;
-        text-transform: uppercase;
-        position: relative;
-        cursor: pointer;
-        transition: opacity 0.2s ease;
-
-        &:hover {
-            opacity: 0.8;
-        }
-
-        &:hover a::after {
-            margin auto;
-            left: 0;
-            right: 0;
-            width: 100%;
-        }
-
-        li {
-            color: #ffffff;
-            display: block;
-            text-decoration: none;
-            padding-bottom: 4px;
-            -webkit-transition: all .2s ease;
-            transition: all .2s ease;
-        }
-
-        li::after {
-            content: " ";
-            background: #FFF;
-            bottom: 0;
-            height: 3px;
-            position: absolute;
-            left: 0;
-            width: 0;
-            border-radius: 3px;
-            -webkit-transition: all 0.2s cubic-bezier(0.25, 0.25, 0.25, 1.25);
-            transition: all 0.2s cubic-bezier(0.25, 0.25, 0.25, 1.25);
-        }
-    }
-
-    a[aria-current="true"] {
-        opacity: 1;
-        color: red;
-
-
-        &:hover {
-            opacity: 1;
-        }
-
-        li::after {
-          background-color: var(--Main-color);
-          width: 100%;
-        }
-    }
+.overlay {
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }

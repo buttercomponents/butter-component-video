@@ -1,136 +1,188 @@
+/* this is https://github.com/mderrick/react-html5video/blob/master/src/DefaultPlayer/DefaultPlayer.js hacked */
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {NavLink, Switch, Route} from 'react-router-dom';
+import {Navbar} from 'butter-base-components'
+import Volume from './components/volume'
 
-import style from './style.styl';
+import videoConnect, {
+    Time,
+    Seek,
+    Captions,
+    PlayPause,
+    Fullscreen,
+    apiHelpers,
+} from 'react-html5video';
 
-const MenuItem = ({title, active, onClick}) => (
-    <a className={active ? 'active' : null} aria-current={active}  onClick={onClick}>
-        <li>{title}</li>
-    </a>
-)
+import {DefaultPlayer as VPlayer} from 'react-html5video'
 
-const Identity = (a) => (a)
+const {
+    setVolume,
+    showTrack,
+    toggleTracks,
+    toggleMute,
+    togglePause,
+    setCurrentTime,
+    toggleFullscreen,
+    getPercentagePlayed,
+    getPercentageBuffered
+} = apiHelpers
 
-const Menu = ({items, active, action = Identity }) => (
-    <nav className={style['app-menu']}>
-        <ul>
-            {items.map((i, k) => (
-                <MenuItem key={k} active={active === k} {...i} onClick={event => action(k)} />
-            ))}
-        </ul>
-        <i className={style['active-marker']}></i>
-    </nav>
-)
+import 'react-html5video/dist/styles.css';
+import './style.css'
+import style from './style.styl'
 
-class StateMenu extends React.Component {
-
-    static propTypes = {
-        items: PropTypes.array.isRequired,
-        selected: PropTypes.number
-    }
-
-    static defaultProps = {
-        active: 0,
-    }
-
-    constructor(props) {
+class Overlay extends React.PureComponent {
+    constructor (props){
         super(props)
         this.state = {
-            active: this.props.active,
+            show: true
         }
     }
 
-    setActiveItem = (item) => {
-        this.setState(state => ({active: item}))
+    componentDidMount() {
+        this.timer = setTimeout(this.hideBar, this.props.timeout)
+    }
+
+    showBar = (e) => {
+        clearTimeout(this.timer)
+        this.setState(state => ({
+            show: true
+        }))
+
+        this.timer = setTimeout(this.hideBar, this.props.timeout)
+    }
+
+    hideBar = () => {
+        this.setState(state => ({
+            show: true
+        }))
     }
 
     render() {
-        const {items, child, ...props} = this.props;
-        const {active} = this.state
+        const {children, ...props} = this.props
+        const {show} = this.state
 
-        const Child = child ? new child({
-            ...items[active],
-            ...props
-        }): null
-
-        return (<div>
-            <Menu {...props}
-                  active={active} items={items}
-                  action={this.setActiveItem.bind(this)} />
-            {Child}
-        </div>
+        return  (
+            <div className={style.overlay} onMouseMove={this.showBar}>
+                {children.map((child, key) => React.cloneElement(child, {...props, key, show}))}
+            </div>
         )
-
     }
 }
 
-const menuRoutes = (items, child, props) => (
-    items.map(item => {
-        const title = item.title ? item.title: item
-        const path = item.path ? item.path : title.replace(/\s/, '')
-
-        return (
-            <Route key={title} path={path} render={(routerProps) => new child({
-                    ...item,
-                    ...routerProps,
-                    ...props
-            })}/>
-        )
-    })
-)
-
-const MenuSwitch = ({items=[], child, fallback = null, ...props}) => (
-    child ? <Switch>
-        {menuRoutes(items, child, props)}
-        <Route render={() => fallback} />
-    </Switch> : fallback
-)
-
-const RouterMenu = ({items, ...props}) => (
-    <div>
-        <nav className={style['app-menu']}>
-            <ul>
-                {items.map((item) => {
-                     const title = item.title ? item.title: item
-                     const path = item.path ? item.path : title.replace(/\s/, '')
-
-                     return (
-                         <NavLink key={title} to={path}><li>{title}</li></NavLink>
-                     )
-                })}
-            </ul>
-        </nav>
-        <MenuSwitch {...props} items={items}/>
-    </div>
-)
-
-RouterMenu.defaultProps = {
-    items: []
+Overlay.defaultProps = {
+    timeout: 2000
 }
 
-const TestChild = (props) => (
-    <div>
-        {JSON.stringify(props)}
-    </div>
+Overlay.propTypes = {
+    timeout: PropTypes.number
+}
+
+const PlayBar = ({
+    video,
+    onSeekChange,
+    onVolumeChange,
+    onVolumeClick,
+    onCaptionsClick,
+    onPlayPauseClick,
+    onFullscreenClick,
+    onCaptionsItemClick,
+    ...props
+}) => (
+    <Navbar type='playbar-nav' {...props}>
+        <PlayPause
+            onClick={onPlayPauseClick}
+            {...video} />
+        <Time {...video} />
+        <Seek
+            onChange={onSeekChange}
+            {...video} />
+        <Volume
+            onClick={onVolumeClick}
+            onChange={onVolumeChange}
+            {...video} />
+        <Captions
+            onClick={onCaptionsClick}
+            onItemClick={onCaptionsItemClick}
+            {...video}/>
+        <Fullscreen
+            onClick={onFullscreenClick}
+            {...video} />
+    </Navbar>
 )
 
-const Test = (props) => (
-    <div style={{background: 'black'}}>
-        <h1>menu</h1>
-        <Menu {...props}/>
-        <h1>router menu</h1>
-        <h2>without child</h2>
-        <RouterMenu {...props}/>
-        <h2>with child</h2>
-        <RouterMenu {...props} child={TestChild}/>
-        <h1>state menu</h1>
-        <h2>without child</h2>
-        <StateMenu {...props}/>
-        <h2>with child</h2>
-        <StateMenu {...props} child={TestChild}/>
-    </div>
-)
+PlayBar.propTypes = {
+    show: PropTypes.bool
+}
 
-export {Test as default, Menu, StateMenu, RouterMenu, MenuSwitch, menuRoutes}
+const DefaultPlayer = ({
+    error,
+    copy,
+    video,
+    goBack,
+    children,
+    className,
+    handlers,
+    ...props
+}) => {
+    return (
+        <div className={className}>
+            {error ? <p>{console.error(error)} </p>: null}
+            <video
+                {...props}>
+                { children }
+            </video>
+            <Overlay>
+                <Navbar type='player-nav' goBack={goBack}/>
+                <PlayBar video={video} {...handlers}/>
+            </Overlay>
+        </div>
+    );
+};
+
+DefaultPlayer.defaultProps = {
+    video: {},
+    goBack: {
+        action: () => {},
+        title: 'Go Back'
+    }
+};
+
+DefaultPlayer.propTypes = {
+    video: PropTypes.object.isRequired
+};
+
+const ConnectedPlayer = videoConnect(
+    DefaultPlayer,
+    ({ networkState, readyState, error, ...state }) => ({
+        video: {
+            readyState,
+            networkState,
+            error: error || networkState === 3,
+            // TODO: This is not pretty. Doing device detection to remove
+            // spinner on iOS devices for a quick and dirty win. We should see if
+            // we can use the same readyState check safely across all browsers.
+            loading: readyState < (/iPad|iPhone|iPod/.test(navigator.userAgent) ? 1 : 4),
+            percentagePlayed: getPercentagePlayed(state),
+            percentageBuffered: getPercentageBuffered(state),
+            ...state
+        }
+    }),
+    (videoEl, {error, ...state}) => ({
+        error,
+        handlers: {
+            onFullscreenClick: () => toggleFullscreen(videoEl.parentElement),
+            onVolumeClick: () => toggleMute(videoEl, state),
+            onCaptionsClick: () => toggleTracks(state),
+            onPlayPauseClick: () => togglePause(videoEl, state),
+            onCaptionsItemClick: (track) => showTrack(state, track),
+            onVolumeChange: (e) => setVolume(videoEl, state, e.target.value),
+            onSeekChange: (e) => setCurrentTime(videoEl, state, e.target.value * state.duration / 100),
+        }
+    })
+);
+
+export {
+    ConnectedPlayer as default
+}

@@ -1,3 +1,3 @@
-import {Menu, RouterMenu, StateMenu, MenuSwitch, menuRoutes} from './src'
+import ButterPlayer from './src'
 
-export {Menu as default, RouterMenu, StateMenu, MenuSwitch, menuRoutes}
+export {ButterPlayer as default}

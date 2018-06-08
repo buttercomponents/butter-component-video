@@ -1,14 +1,14 @@
 {
-  "name": "butter-component-menu",
+  "name": "butter-component-video",
   "version": "0.2.0",
-  "description": "A Butter component for menus, uses react-dom-router",
+  "description": "A Butter component for videos, uses react-dom-router",
   "main": "dist/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/buttercomponents/butter-component-menu.git"
+    "url": "https://github.com/buttercomponents/butter-component-video.git"
   },
   "keywords": [
-    "menu",
+    "video",
     "react",
     "reactjs",
     "boilerplate",
@@ -22,16 +22,17 @@
   "author": "Niv Sardi <x@btn.sh>",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/buttercomponents/butter-component-menu/issues"
+    "url": "https://github.com/buttercomponents/butter-component-video/issues"
   },
-  "homepage": "https://github.com/buttercomponents/butter-component-menu",
+  "homepage": "https://github.com/buttercomponents/butter-component-video",
   "devDependencies": {
     "butter-component-builder": "buttercomponents/butter-component-builder"
   },
   "dependencies": {
+    "butter-base-components": "buttercomponents/butter-base-components",
     "prop-types": "^15.5.10",
-    "react-i18next": "^3.1.0",
-    "react-router-dom": "^4.2.2"
+    "react-html5video": "^2.5.1",
+    "react-i18next": "^3.1.0"
   },
   "scripts": {
     "prepublish": "npm run build",
