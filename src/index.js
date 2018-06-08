@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {Navbar} from 'butter-base-components'
+import {Navbar, Window} from 'butter-base-components'
 import Volume from './components/volume'
 
 import videoConnect, {
@@ -10,7 +10,6 @@ import videoConnect, {
     Seek,
     Captions,
     PlayPause,
-    Fullscreen,
     apiHelpers,
 } from 'react-html5video';
 
@@ -23,7 +22,6 @@ const {
     toggleMute,
     togglePause,
     setCurrentTime,
-    toggleFullscreen,
     getPercentagePlayed,
     getPercentageBuffered
 } = apiHelpers
@@ -55,7 +53,7 @@ class Overlay extends React.PureComponent {
 
     hideBar = () => {
         this.setState(state => ({
-            show: true
+            show: false
         }))
     }
 
@@ -86,7 +84,6 @@ const PlayBar = ({
     onVolumeClick,
     onCaptionsClick,
     onPlayPauseClick,
-    onFullscreenClick,
     onCaptionsItemClick,
     ...props
 }) => (
@@ -106,9 +103,6 @@ const PlayBar = ({
             onClick={onCaptionsClick}
             onItemClick={onCaptionsItemClick}
             {...video}/>
-        <Fullscreen
-            onClick={onFullscreenClick}
-            {...video} />
     </Navbar>
 )
 
@@ -133,7 +127,7 @@ const DefaultPlayer = ({
                 {...props}>
                 { children }
             </video>
-            <Overlay>
+            <Overlay onClick={handlers.onPlayPauseClick}>
                 <Navbar type='player-nav' goBack={goBack}/>
                 <PlayBar video={video} {...handlers}/>
             </Overlay>
@@ -183,6 +177,12 @@ const ConnectedPlayer = videoConnect(
     })
 );
 
+const Test = (props) => (
+    <Window>
+        <ConnectedPlayer {...props}/>
+    </Window>
+)
+
 export {
-    ConnectedPlayer as default
+    Test as default, ConnectedPlayer
 }

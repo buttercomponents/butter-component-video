@@ -1,3 +1,3 @@
-import ButterPlayer from './src'
+import {ConnectedPlayer} from './src'
 
-export {ButterPlayer as default}
+export {ConnectedPlayer as default}
