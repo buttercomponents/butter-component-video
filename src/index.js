@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import {Navbar, Window} from 'butter-base-components'
 import Volume from './components/volume'
+import Overlay from './components/overlay'
 
 import videoConnect, {
     Time,
@@ -21,6 +22,7 @@ const {
     toggleTracks,
     toggleMute,
     togglePause,
+    toggleFullscreen,
     setCurrentTime,
     getPercentagePlayed,
     getPercentageBuffered
@@ -29,53 +31,6 @@ const {
 import 'react-html5video/dist/styles.css';
 import './style.css'
 import style from './style.styl'
-
-class Overlay extends React.PureComponent {
-    constructor (props){
-        super(props)
-        this.state = {
-            show: true
-        }
-    }
-
-    componentDidMount() {
-        this.timer = setTimeout(this.hideBar, this.props.timeout)
-    }
-
-    showBar = (e) => {
-        clearTimeout(this.timer)
-        this.setState(state => ({
-            show: true
-        }))
-
-        this.timer = setTimeout(this.hideBar, this.props.timeout)
-    }
-
-    hideBar = () => {
-        this.setState(state => ({
-            show: false
-        }))
-    }
-
-    render() {
-        const {children, ...props} = this.props
-        const {show} = this.state
-
-        return  (
-            <div className={style.overlay} onMouseMove={this.showBar}>
-                {children.map((child, key) => React.cloneElement(child, {...props, key, show}))}
-            </div>
-        )
-    }
-}
-
-Overlay.defaultProps = {
-    timeout: 2000
-}
-
-Overlay.propTypes = {
-    timeout: PropTypes.number
-}
 
 const PlayBar = ({
     video,
@@ -120,18 +75,18 @@ const DefaultPlayer = ({
     ...props
 }) => {
     return (
-            <div className={style.component} onMouseMove={() => {}}>
+        <div className={style.component} >
             {error ? <p>{console.error(error)} </p>: null}
             <video
-            {...props}>
-            { children }
+                {...props}>
+                { children }
             </video>
-            <Overlay onClick={handlers.onPlayPauseClick}>
-            <Navbar type='player-nav' goBack={goBack}/>
-            <PlayBar video={video} {...handlers}/>
+            <Overlay onClick={handlers.onPlayPauseClick} onDoubleClick={handlers.onFullscreenClick} video={video}>
+                <Navbar type='player-nav' goBack={goBack}/>
+                <PlayBar {...handlers}/>
             </Overlay>
-            </div>
-            );
+        </div>
+    );
 };
 
 DefaultPlayer.defaultProps = {
