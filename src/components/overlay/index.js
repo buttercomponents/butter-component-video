@@ -79,7 +79,8 @@ class Overlay extends React.PureComponent {
 
     render () {
         const { children, className, onClick, onDoubleClick, ...props } = this.props;
-        const {show} = this.state
+        const { video } = this.props;
+        const show = !!(this.state.show || video.paused || video.loading || video.error)
         return (
             <div className={[
                 styles.overlay,
